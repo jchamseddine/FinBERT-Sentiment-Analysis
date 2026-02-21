@@ -37,7 +37,7 @@ dataset_name = "financial_phrasebank"
 
 print("Loading dataset and tokenizer...")
 # 'sentences_allagree': only sentences where 100% of annotators agreed — cleaner labels
-dataset = load_dataset(dataset_name, "sentences_allagree")
+dataset = load_dataset(dataset_name, "sentences_allagree", trust_remote_code=True)
 
 # The dataset only comes with a 'train' split — manually create 80/20 train/test
 dataset = dataset["train"].train_test_split(test_size=0.2, seed=69)
