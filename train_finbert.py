@@ -5,7 +5,6 @@ Description :
 This script fine-tunes the FinBERT LLM on the Financial PhraseBank dataset.
 It is optimized for local execution on an NVIDIA RTX 3060 (12GB VRAM) using advanced 
 memory management techniques like Mixed Precision Training (fp16) and Gradient Accumulation.
-
 """
 #==========================
 # 1. Imports & dependencies
@@ -45,3 +44,35 @@ print("--------------------------------\n")
 #================================
 model_name = "ProsusAI/finbert"
 dataset_name = "financial_phrasebank"
+
+print("Loading dataset and tokenizer...")
+# We use the 'sentences_allagree' subset where 100% of human annotators agreed on the sentiment.
+# Relying on absolute human consensus eliminates noisy data and ensures a robust baseline.
+dataset = load_dataset(dataset_name, "sentences_allagree")
+
+# The dataset only comes with a 'train' split. We manually create a 80/20 train/test split.
+dataset = dataset["train"].train_test_split(test_size=0.2, seed=69)
+
+# Load automatically the tokenizer corresponding to the FinBERT model.
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+def tokenize_function(examples):
+    """
+    Converts raw text sentences into numerical token IDs for the model.
+    
+    This function applies padding and truncation to ensure all tensors have
+    the exact same size. This uniform shape is mandatory for efficient GPU 
+    matrix operations and crucial to prevent Out-Of-Memory (OOM) errors on 
+    a 12GB VRAM GPU.
+    
+    Args:
+        examples (dict): A batch of data from the Hugging Face dataset, 
+                         containing the key "sentence" with a list of raw text strings.
+                         
+    Returns:
+        dict: A dictionary containing the tokenized outputs, specifically:
+              - 'input_ids': The numerical sequence representing the text.
+              - 'attention_mask': A binary mask indicating which tokens are actual words (1) and which are padding (0).
+    """
+    return tokenizer(examples["sentence"], padding="max_length", truncation=True, max_length=128)
+
