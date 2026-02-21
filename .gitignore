@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.env
+venv/
+.venv/
+
+# ML / modèles
+*.pt
+*.bin
+*.safetensors
+*.ckpt
+checkpoints/
+runs/
+outputs/
+logs/
+
+# Données
+data/
+datasets/
+*.csv
+*.json
+*.parquet
+
+# OS
+.DS_Store
+Thumbs.db
