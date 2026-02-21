@@ -33,11 +33,11 @@ print("--------------------------------\n")
 # 3. Data loading & preprocessing
 #================================
 model_name = "ProsusAI/finbert"
-dataset_name = "financial_phrasebank"
+dataset_name = "ahmedrachid/FinancialPhraseBank-v1.0"
 
 print("Loading dataset and tokenizer...")
 # 'sentences_allagree': only sentences where 100% of annotators agreed — cleaner labels
-dataset = load_dataset(dataset_name, "sentences_allagree", trust_remote_code=True)
+dataset = load_dataset(dataset_name, "sentences_allagree")
 
 # The dataset only comes with a 'train' split — manually create 80/20 train/test
 dataset = dataset["train"].train_test_split(test_size=0.2, seed=69)
