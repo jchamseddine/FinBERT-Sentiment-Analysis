@@ -33,14 +33,11 @@ print("--------------------------------\n")
 # 3. Data loading & preprocessing
 #================================
 model_name = "ProsusAI/finbert"
-dataset_name = "takala/financial_phrasebank"
+dataset_name = "gtfintechlab/financial_phrasebank_sentences_allagree"
 
 print("Loading dataset and tokenizer...")
-# 'sentences_allagree': only sentences where 100% of annotators agreed — cleaner labels
-dataset = load_dataset(dataset_name, "sentences_allagree")
-
-# The dataset only comes with a 'train' split — manually create 80/20 train/test
-dataset = dataset["train"].train_test_split(test_size=0.2, seed=69)
+# Dataset is already the sentences_allagree subset (100% annotator agreement — cleaner labels)
+dataset = load_dataset(dataset_name, "5768")
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -55,7 +52,7 @@ tokenized_datasets = dataset.map(tokenize_function, batched=True)
 #==================================
 print("Loading FinBERT model...")
 # 3 labels: Positive (0), Negative (1), Neutral (2)
-model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=3)
+model = AutoModelForSequenceClassification.from_pretrained(model_name, num_labels=3, use_safetensors=True)
 
 accuracy_metric = evaluate.load("accuracy")
 
