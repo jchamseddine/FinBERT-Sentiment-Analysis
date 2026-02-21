@@ -33,7 +33,7 @@ print("--------------------------------\n")
 # 3. Data loading & preprocessing
 #================================
 model_name = "ProsusAI/finbert"
-dataset_name = "ahmedrachid/FinancialPhraseBank-v1.0"
+dataset_name = "takala/financial_phrasebank"
 
 print("Loading dataset and tokenizer...")
 # 'sentences_allagree': only sentences where 100% of annotators agreed — cleaner labels
