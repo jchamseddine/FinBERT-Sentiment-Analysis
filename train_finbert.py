@@ -61,19 +61,18 @@ def compute_metrics(eval_pred):
     predictions = np.argmax(logits, axis=-1)
     return accuracy_metric.compute(predictions=predictions, references=labels)
 
-#===========================================
-# 5. Training config & hardware optimization
-#===========================================
+#===================
+# 5. Training config
+#===================
 training_args = TrainingArguments(
     output_dir="./finbert_results",
     eval_strategy="epoch",
     learning_rate=2e-5,           # Standard fine-tuning LR for BERT-based models
 
-    #VRAM OPTIMIZATION FOR RTX 3060 (12GB)
-    per_device_train_batch_size=16,
+    # Training hyperparameters
+    per_device_train_batch_size=32,
     per_device_eval_batch_size=16,
-    gradient_accumulation_steps=2,  # Simulates effective batch size of 32
-    fp16=True,                       # Halves VRAM usage, speeds up on Tensor Cores
+    fp16=True,                       # Mixed precision — halves VRAM usage and speeds up on Tensor Cores
 
     num_train_epochs=3,
     weight_decay=0.01,            # L2 regularization to prevent overfitting
