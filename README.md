@@ -5,15 +5,29 @@ Fine-tuning FinBERT on the Financial PhraseBank dataset for financial sentiment 
 ## Hardware
 - NVIDIA RTX 3060 (12GB VRAM)
 - Mixed Precision Training (fp16)
-- Gradient Accumulation
+- Gradient Accumulation (steps=2, effective batch size=32)
 
-## Model
+## Model & Data
 - Base model: [ProsusAI/finbert](https://huggingface.co/ProsusAI/finbert)
-- Dataset: [Financial PhraseBank](https://huggingface.co/datasets/financial_phrasebank)
+- Dataset: [gtfintechlab/financial_phrasebank_sentences_allagree](https://huggingface.co/datasets/gtfintechlab/financial_phrasebank_sentences_allagree) — subset with 100% annotator agreement (config `5768`)
+- Labels: Positive (0), Negative (1), Neutral (2)
+
+## Output
+The fine-tuned model and tokenizer are saved to `./finbert_quant_finetuned/` after training.
 
 ## Setup
 
 ```bash
+conda create -n finbert python=3.10
+conda activate finbert
 pip install -r requirements.txt
 python train_finbert.py
 ```
+
+## Dependencies
+- `torch`
+- `transformers`
+- `datasets`
+- `evaluate`
+- `numpy`
+- `accelerate`
