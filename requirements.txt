@@ -1,4 +1,5 @@
-torch
+# PyTorch must be installed separately with CUDA support — see README Setup section.
+# Do NOT install torch from this file (pip install -r requirements.txt installs CPU-only).
 transformers
 datasets
 evaluate

@@ -5,7 +5,6 @@ Fine-tuning FinBERT on the Financial PhraseBank dataset for financial sentiment 
 ## Hardware
 - NVIDIA RTX 3060 (12GB VRAM)
 - Mixed Precision Training (fp16)
-- Gradient Accumulation (steps=2, effective batch size=32)
 
 ## Model & Data
 - Base model: [ProsusAI/finbert](https://huggingface.co/ProsusAI/finbert)
@@ -20,6 +19,8 @@ The fine-tuned model and tokenizer are saved to `./finbert_quant_finetuned/` aft
 ```bash
 conda create -n finbert python=3.10
 conda activate finbert
+# Install PyTorch with CUDA 12.1 support (required for GPU training)
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 pip install -r requirements.txt
 python train_finbert.py
 ```
